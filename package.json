@@ -19,5 +19,8 @@
   "homepage": "https://github.com/mikiteek/goit-nodejs-webserver#readme",
   "devDependencies": {
     "nodemon": "^2.0.5"
+  },
+  "dependencies": {
+    "yargs": "^16.1.0"
   }
 }
