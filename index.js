@@ -1,7 +1,23 @@
-const {listContacts, getContactById, removeContact, addContact} = require("./contacts");
+const {listContact, getContactById, removeContact, addContact} = require("./contactsOperations");
+const {argv} = require("./utils/yargs")
 
-// listContacts().then(console.log).catch(error => console.log(error.message));
-// getContactById(2).then(console.log).catch(error => console.log(error.message));
-// removeContact(3).catch(error => console.log(error.message));
-// addContact("sergii", "sergii@gmail.com", "222-333-444").catch(error => console.log(error.message));
+const invokeAction = ({action, id, name, email, phone}) => {
+  switch (action) {
+    case "list":
+      listContact();
+      break;
+    case "get":
+      getContactById(id);
+      break;
+    case "add":
+      addContact(name, email, phone);
+      break;
+    case "remove":
+      removeContact(id);
+      break;
+    default:
+      console.warn('\x1B[31m Unknown action type!');
+  }
+}
 
+invokeAction(argv);
