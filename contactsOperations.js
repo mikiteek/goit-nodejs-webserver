@@ -7,9 +7,6 @@ const listContact = () => {
 const getContactById = (id) => {
   getContactByIdPromise(id)
     .then(contact => {
-      if (!contact) {
-        throw new Error("Contact not found");
-      }
       console.log(contact);
     })
     .catch(error => console.log(error.message));

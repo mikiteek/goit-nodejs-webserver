@@ -11,10 +11,11 @@ const listContactsPromise = async () => {
 
 const getContactByIdPromise = async (contactId) => {
   const contacts = JSON.parse(await fsPromises.readFile(contactsPath, "utf-8"));
-  // if (contacts.includes(item => item.id === contactId) === false) { почему всегда false
-  //   throw new Error("Contact not found");
-  // }
-  return contacts.find(({id}) => id === contactId);
+  const findContact = contacts.find(({id}) => id === contactId);
+  if (!findContact) {
+    throw new Error("Contact not found");
+  }
+  return findContact;
 }
 
 const removeContactPromise = async (contactId) => {
