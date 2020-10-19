@@ -1,6 +1,7 @@
 const fs = require("fs");
 const {promises: fsPromises} = fs;
 const path = require("path");
+const Contact = require("../models/Contact");
 
 const contactsPath = path.join(__dirname, "../db/contacts.json");
 
@@ -21,5 +22,14 @@ const getContactByIdPromise = async (contactId) => {
   return findContact;
 }
 
+const addContactPromise = async ({name, email, phone}) => {
+  const contacts = JSON.parse(await fsPromises.readFile(contactsPath, "utf-8"));
+  const addingContact = new Contact(contacts[contacts.length - 1].id + 1, name, email, phone)
+  contacts.push(addingContact);
+  await fsPromises.writeFile(contactsPath, JSON.stringify(contacts));
+  return addingContact;
+}
+
 exports.listContactPromise = listContactPromise;
 exports.getContactByIdPromise = getContactByIdPromise;
+exports.addContactPromise = addContactPromise;
