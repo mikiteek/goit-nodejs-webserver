@@ -30,6 +30,18 @@ const addContactPromise = async ({name, email, phone}) => {
   return addingContact;
 }
 
-exports.listContactPromise = listContactPromise;
-exports.getContactByIdPromise = getContactByIdPromise;
-exports.addContactPromise = addContactPromise;
+const removeContactPromise = async (contactId) => {
+  const contacts = JSON.parse(await fsPromises.readFile(contactsPath, "utf-8"));
+  if (!contacts.find(({id}) => id === contactId)) {
+    throw new Error("Not found");
+  }
+  const filterContacts = contacts.filter(item => item.id !== contactId);
+  await fsPromises.writeFile(contactsPath, JSON.stringify(filterContacts));
+}
+
+module.exports = {
+  listContactPromise,
+  getContactByIdPromise,
+  addContactPromise,
+  removeContactPromise,
+}

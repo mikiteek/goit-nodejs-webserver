@@ -12,5 +12,6 @@ contactsRouter.post("/",
   createContactValidation,
   contactsController.addContact
 );
+contactsRouter.delete("/:id", contactsController.removeContact);
 
 module.exports = contactsRouter;
