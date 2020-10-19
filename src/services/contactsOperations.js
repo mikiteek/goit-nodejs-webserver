@@ -4,7 +4,7 @@ const path = require("path");
 
 const contactsPath = path.join(__dirname, "../db/contacts.json");
 
-const listContact = async () => {
+const listContactPromise = async () => {
   const contacts = await fsPromises.readFile(contactsPath, "utf-8");
   if (!contacts) {
     throw new Error("Server is temporarily unavailable, please try later");
@@ -12,4 +12,14 @@ const listContact = async () => {
   return JSON.parse(contacts);
 }
 
-exports.listContact = listContact;
+const getContactByIdPromise = async (contactId) => {
+  const contacts = JSON.parse(await fsPromises.readFile(contactsPath, "utf-8"));
+  const findContact = contacts.find(({id}) => id === contactId);
+  if (!findContact) {
+    throw new Error("Not found");
+  }
+  return findContact;
+}
+
+exports.listContactPromise = listContactPromise;
+exports.getContactByIdPromise = getContactByIdPromise;
