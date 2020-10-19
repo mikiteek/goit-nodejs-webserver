@@ -1,4 +1,4 @@
-const {listContactPromise, getContactByIdPromise, addContactPromise} = require("../services/contactsOperations");
+const {listContactPromise, getContactByIdPromise, addContactPromise, removeContactPromise} = require("../services/contactsOperations");
 
 class ContactsController {
   static getContacts(req, res) {
@@ -17,6 +17,12 @@ class ContactsController {
     addContactPromise(req.body)
       .then(contact => res.status(201).json(contact))
       .catch(error => res.json({message: error.message}));
+  }
+
+  static removeContact(req, res) {
+    removeContactPromise(parseInt(req.params.id))
+      .then(() => res.status(200).json({message: "contact deleted"}))
+      .catch(error => res.status(404).json({message: error.message}))
   }
 
 }
