@@ -9,7 +9,6 @@ const createContactValidation = (req, res, next) => {
 
   const validateResult = schema.validate(req.body);
   if (validateResult.error) {
-    console.log(validateResult)
     return res.status(400).json({message: validateResult.error.message})
   }
   next();
