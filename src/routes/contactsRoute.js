@@ -1,6 +1,6 @@
 const express = require("express");
 const contactsController = require("../controllers/ContactsController");
-const {createContactValidation} = require("../middleware/validationJoi");
+const {createContactValidation, updateContactValidation} = require("../middleware/validationJoi");
 
 const contactsRouter = express.Router();
 
@@ -13,5 +13,8 @@ contactsRouter.post("/",
   contactsController.addContact
 );
 contactsRouter.delete("/:id", contactsController.removeContact);
+contactsRouter.patch("/:id",
+  updateContactValidation,
+  contactsController.updateContact);
 
 module.exports = contactsRouter;

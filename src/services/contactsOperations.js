@@ -39,9 +39,24 @@ const removeContactPromise = async (contactId) => {
   await fsPromises.writeFile(contactsPath, JSON.stringify(filterContacts));
 }
 
+const updateContactPromise = async (contactId, body) => {
+  const contacts = JSON.parse(await fsPromises.readFile(contactsPath, "utf-8"));
+  const targetContactIndex = contacts.findIndex(({id}) => id === contactId);
+  if (targetContactIndex === -1) {
+    throw new Error("Not found");
+  }
+  contacts[targetContactIndex] = {
+    ...contacts[targetContactIndex],
+    ...body,
+  };
+  await fsPromises.writeFile(contactsPath, JSON.stringify(contacts));
+  return contacts[targetContactIndex];
+}
+
 module.exports = {
   listContactPromise,
   getContactByIdPromise,
   addContactPromise,
   removeContactPromise,
+  updateContactPromise,
 }
