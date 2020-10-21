@@ -1,4 +1,3 @@
-const contactModel = require("../models/contactModel");
 const {Types: {ObjectId}} = require("mongoose");
 
 const findByIdMiddleware = (req, res, next) => {
