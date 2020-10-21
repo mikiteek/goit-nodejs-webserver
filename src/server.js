@@ -2,6 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
+const contactRouter = require("./routes/contactsRoutes");
+const errorMiddleware = require("./middlewares/errorMiddleware")
+
 require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
@@ -29,10 +32,12 @@ class HandlerServer {
     this.server.use(express.json());
     this.server.use(cors({origin: `http://localhost:${PORT}`}));
     this.server.use(morgan("combined"));
+
+    this.server.use(errorMiddleware);
   }
 
   initRoutes() {
-    console.log("Init routes here");
+    this.server.use("/api/contacts", contactRouter)
   }
 
   async initDatabase() {
