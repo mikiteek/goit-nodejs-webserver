@@ -1,0 +1,30 @@
+{
+  "name": "goit-nodejs-webserver",
+  "version": "1.0.0",
+  "description": "mongo",
+  "main": "src/start.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "joi": "^17.2.1",
+    "mongoose": "^5.10.9",
+    "morgan": "^1.10.0",
+    "yargs": "^16.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikiteek/goit-nodejs-webserver.git"
+  },
+  "author": "Sergey Mikiteek <mikiteek@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikiteek/goit-nodejs-webserver/issues"
+  },
+  "homepage": "https://github.com/mikiteek/goit-nodejs-webserver#readme"
+}
