@@ -17,5 +17,8 @@ contactsRoute.post("/",
   checkEmailAlreadyExist,
   contactsController.createContact
 );
+contactsRoute.delete("/:id",
+  findContactByIdMiddleware,
+  contactsController.deleteContactById);
 
 module.exports = contactsRoute;

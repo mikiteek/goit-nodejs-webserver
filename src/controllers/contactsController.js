@@ -32,7 +32,16 @@ class ContactsController {
       next(error)
     }
   }
-
+  async deleteContactById(req, res, next) {
+    try {
+      const {id} = req.params;
+      await contactModel.findByIdAndDelete(id);
+      return res.status(200).json({message: "contact deleted"});
+    }
+    catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new ContactsController();
