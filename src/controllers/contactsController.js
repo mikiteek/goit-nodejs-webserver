@@ -11,6 +11,17 @@ class ContactsController {
       next(error)
     }
   }
+
+  async getContactById(req, res, next) {
+    try {
+      const {id} = req.params;
+      const contact = await contactModel.findById(id);
+      return res.status(200).json(contact);
+    }
+    catch (error) {
+      next(error)
+    }
+  }
 }
 
 module.exports = new ContactsController();

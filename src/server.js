@@ -3,10 +3,9 @@ const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const contactRouter = require("./routes/contactsRoutes");
-const errorMiddleware = require("./middlewares/errorMiddleware")
+const errorMiddleware = require("./middlewares/errorMiddleware");
 
 require("dotenv").config();
-
 const PORT = process.env.PORT || 3000;
 const {MONGO_KEY, DB_NAME} = process.env;
 const MONGO_URL = `mongodb+srv://mikiteek:${MONGO_KEY}@cluster0.pjuye.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
@@ -21,6 +20,7 @@ class HandlerServer {
     this.initMiddlewares();
     this.initRoutes();
     await this.initDatabase();
+    this.initErrorMiddleware();
     this.startListening();
   }
 
@@ -32,7 +32,8 @@ class HandlerServer {
     this.server.use(express.json());
     this.server.use(cors({origin: `http://localhost:${PORT}`}));
     this.server.use(morgan("combined"));
-
+  }
+  initErrorMiddleware() {
     this.server.use(errorMiddleware);
   }
 
@@ -52,7 +53,7 @@ class HandlerServer {
 
   startListening() {
     this.server.listen(PORT, () => {
-      console.log("Server listening on port", PORT);
+      console.log("Server is listening on port", PORT);
     });
   }
 
