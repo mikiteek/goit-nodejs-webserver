@@ -22,6 +22,17 @@ class ContactsController {
       next(error)
     }
   }
+
+  async createContact(req, res, next) {
+    try {
+      const contact = await contactModel.create(req.body);
+      return res.status(201).json(contact);
+    }
+    catch (error) {
+      next(error)
+    }
+  }
+
 }
 
 module.exports = new ContactsController();
