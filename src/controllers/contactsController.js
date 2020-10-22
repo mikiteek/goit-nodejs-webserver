@@ -1,5 +1,5 @@
-const Joi = require("joi");
 const contactModel = require("../models/contactModel");
+const checkContactOperationService = require("../services/checkContactOperationService");
 
 class ContactsController {
   async getListContacts(req, res, next) {
@@ -16,6 +16,7 @@ class ContactsController {
     try {
       const {id} = req.params;
       const contact = await contactModel.findById(id);
+      checkContactOperationService(contact, res);
       return res.status(200).json(contact);
     }
     catch (error) {
@@ -35,8 +36,25 @@ class ContactsController {
   async deleteContactById(req, res, next) {
     try {
       const {id} = req.params;
-      await contactModel.findByIdAndDelete(id);
+      const contactToDelete = await contactModel.findByIdAndDelete(id);
+      checkContactOperationService(contactToDelete, res);
       return res.status(200).json({message: "contact deleted"});
+    }
+    catch (error) {
+      next(error);
+    }
+  }
+
+  async updateContactBiId(req, res, next) {
+    try {
+      const {id} = req.params;
+      const contactToUpdate = await contactModel.findByIdAndUpdate(
+        id,
+        {$set: req.body,},
+        {new: true,}
+      );
+      checkContactOperationService(contactToUpdate, res);
+      return res.status(200).json(contactToUpdate);
     }
     catch (error) {
       next(error);
