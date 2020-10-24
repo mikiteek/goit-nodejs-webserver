@@ -3,7 +3,8 @@ const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const contactRouter = require("./routes/contactsRoutes");
-const usersRouter = require("./routes/usersRoutes");
+const authRouter = require("./routes/authRoutes");
+const usersRouter = require("./routes/usersRouter");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 
 require("dotenv").config();
@@ -40,7 +41,8 @@ class HandlerServer {
 
   initRoutes() {
     this.server.use("/api/contacts", contactRouter);
-    this.server.use("/auth", usersRouter);
+    this.server.use("/auth", authRouter);
+    this.server.use("/users", usersRouter);
   }
 
   async initDatabase() {

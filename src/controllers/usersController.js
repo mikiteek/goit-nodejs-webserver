@@ -45,7 +45,6 @@ class UsersController {
         token,
       }
       return res.status(200).json(userToClient);
-
     }
     catch (error) {
       next(error);
@@ -57,6 +56,20 @@ class UsersController {
       const {_id: id} = req.user;
       await userModel.updateToken(id, null);
       return res.status(204).send();
+    }
+    catch (error) {
+      next(error);
+    }
+  }
+
+  async getCurrentUser(req, res, next) {
+    try {
+      const {email, subscription} = req.user;
+      const userToClient = {
+        email,
+        subscription,
+      }
+      res.status(200).json(userToClient);
     }
     catch (error) {
       next(error);
