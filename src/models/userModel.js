@@ -7,6 +7,11 @@ const userSchema = new Schema({
   subscription: {type: String, enum: ["free", "pro", "premium"], default: "free"},
   token: {type: String, default: ""},
 });
+
+async function updateToken(id, token) {
+  return this.findByIdAndUpdate(id, {token}, {new: true});
+}
+userSchema.statics.updateToken = updateToken;
 // users
 const userModel = mongoose.model("User", userSchema);
 

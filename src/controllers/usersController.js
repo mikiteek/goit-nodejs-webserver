@@ -1,5 +1,6 @@
 const userModel = require("../models/userModel");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 class UsersController {
   async register (req, res, next) {
@@ -10,10 +11,14 @@ class UsersController {
         ...req.body,
         password: hashPassword,
       }
-      const {email, subscription} = await userModel.create(userToDb);
+      const {_id: id} = await userModel.create(userToDb);
+
+      const token = await jwt.sign({id}, process.env.JWT_SECRET);
+      const {email, subscription} = await userModel.updateToken(id, token);
+
       const userToClient = {
         user: {email, subscription},
-        token: ""
+        token
       };
 
       return res.status(201).json(userToClient);
