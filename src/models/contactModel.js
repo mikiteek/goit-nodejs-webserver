@@ -6,7 +6,7 @@ const contactSchema = new Schema({
   email: {type: String, required: true},
   phone: {type: String, required: true},
   subscription: {type: String, default: "free", enum: ["free", "premium", "pro"]},
-  password: {type: String, required: true, minlength: 6, maxlength: 30},
+  password: {type: String, required: true, minlength: 6, maxlength: 130},
   token: {type: String, default: ""},
 });
 // contacts
