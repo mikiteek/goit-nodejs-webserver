@@ -6,22 +6,22 @@ const checkUserExistMiddleware = require("../middlewares/usersMiddlewares/checkU
 const loginUsersValidateMiddleware = require("../middlewares/usersMiddlewares/loginUserValidateMiddleware");
 const authorizeMiddleware = require("../middlewares/usersMiddlewares/authorizeMiddleware");
 
-const usersRoute = express.Router();
+const authRoute = express.Router();
 
-usersRoute.post("/register",
+authRoute.post("/register",
   registerUsersValidateMiddleware,
   checkUserExistMiddleware,
   usersController.register,
 );
 
-usersRoute.post("/login",
+authRoute.post("/login",
   loginUsersValidateMiddleware,
   usersController.login,
 );
 
-usersRoute.post("/logout",
+authRoute.post("/logout",
   authorizeMiddleware,
   usersController.logout,
-)
+);
 
-module.exports = usersRoute;
+module.exports = authRoute;
