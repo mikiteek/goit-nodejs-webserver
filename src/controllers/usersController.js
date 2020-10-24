@@ -51,6 +51,17 @@ class UsersController {
       next(error);
     }
   }
+
+  async logout(req, res, next) {
+    try {
+      const {_id: id} = req.user;
+      await userModel.updateToken(id, null);
+      return res.status(204).send();
+    }
+    catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new UsersController();

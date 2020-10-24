@@ -17,6 +17,11 @@ usersRoute.post("/register",
 usersRoute.post("/login",
   loginUsersValidateMiddleware,
   usersController.login,
+);
+
+usersRoute.post("/logout",
+  authorizeMiddleware,
+  usersController.logout,
 )
 
 module.exports = usersRoute;
