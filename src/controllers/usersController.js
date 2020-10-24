@@ -12,7 +12,6 @@ class UsersController {
         password: hashPassword,
       }
       const {_id: id} = await userModel.create(userToDb);
-
       const token = await jwt.sign({id}, process.env.JWT_SECRET);
       const {email, subscription} = await userModel.updateToken(id, token);
 
