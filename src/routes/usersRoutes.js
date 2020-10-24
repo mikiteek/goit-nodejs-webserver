@@ -4,6 +4,7 @@ const usersController = require("../controllers/usersController");
 const registerUsersValidateMiddleware = require("../middlewares/usersMiddlewares/registerUserValidateMiddleware");
 const checkUserExistMiddleware = require("../middlewares/usersMiddlewares/checkUserAlreadyExistMiddleware");
 const loginUsersValidateMiddleware = require("../middlewares/usersMiddlewares/loginUserValidateMiddleware");
+const authorizeMiddleware = require("../middlewares/usersMiddlewares/authorizeMiddleware");
 
 const usersRoute = express.Router();
 
