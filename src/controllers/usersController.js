@@ -27,6 +27,31 @@ class UsersController {
       next(error);
     }
   }
+  async login(req, res, next) {
+    try {
+      const {password} = req.body;
+      const user = await userModel.findOne({email: req.body.email})
+      if (!user) {
+        return res.status(401).json({message: "Not authorized"});
+      }
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if(!isPasswordValid) {
+        return res.status(401).json({message: "Not authorized"});
+      }
+
+      const token = await jwt.sign({id: user._id}, process.env.JWT_SECRET);
+      const {email, subscription} = await userModel.updateToken(user._id, token);
+      const userToClient = {
+        user: {email, subscription},
+        token,
+      }
+      return res.status(200).json(userToClient);
+
+    }
+    catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new UsersController();
