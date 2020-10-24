@@ -1,10 +1,10 @@
 const express = require("express");
 
 const contactsController = require("../controllers/contactsController");
-const findContactByIdMiddleware = require("../middlewares/findContactByIdMiddleware");
-const createContactValidMiddleware = require("../middlewares/createContactValidateMiddleware");
-const checkEmailAlreadyExistMiddleWare = require("../middlewares/checkEmailExistMiddleware");
-const updateContactValidMiddleware = require("../middlewares/updateContactValidationMiddleware");
+const findContactByIdMiddleware = require("../middlewares/contactsMiddlewares/findContactByIdMiddleware");
+const createContactValidMiddleware = require("../middlewares/contactsMiddlewares/createContactValidateMiddleware");
+const checkEmailAlreadyExistMiddleWare = require("../middlewares/contactsMiddlewares/checkEmailExistMiddleware");
+const updateContactValidMiddleware = require("../middlewares/contactsMiddlewares/updateContactValidationMiddleware");
 
 const contactsRoute = express.Router();
 
