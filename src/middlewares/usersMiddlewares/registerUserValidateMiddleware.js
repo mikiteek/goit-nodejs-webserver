@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const ErrorBadRequest400 = require("../../helpers/errors/errorBadRequest400");
 
 const registerUserValidateMiddleware = (req, res, next) => {
   const schema = Joi.object({
@@ -9,7 +8,7 @@ const registerUserValidateMiddleware = (req, res, next) => {
   });
   const validateResult = schema.validate(req.body);
   if (validateResult.error) {
-    next(new ErrorBadRequest400(validateResult.error.message));
+    return res.status(400).json({message: validateResult.error.message})
   }
   next();
 }
