@@ -1,10 +1,10 @@
-const {listContact, getContactById, removeContact, addContact} = require("./contactsOperations");
+const {listContacts, getContactById, removeContact, addContact} = require("./contacts");
 const {argv} = require("./utils/yargs")
 
 const invokeAction = ({action, id, name, email, phone}) => {
   switch (action) {
     case "list":
-      listContact();
+      listContacts()
       break;
     case "get":
       getContactById(id);
