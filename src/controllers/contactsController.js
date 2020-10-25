@@ -4,7 +4,12 @@ const checkContactOperationService = require("../services/checkContactOperationS
 class ContactsController {
   async getListContacts(req, res, next) {
     try {
-      const contacts = await contactModel.find({});
+      const page = Number(req.query.page);
+      const limit = Number(req.query.limit);
+      const options = {
+        page, limit,
+      };
+      const contacts = await contactModel.paginate({}, options);
       return res.status(200).json(contacts);
     }
     catch (error) {
