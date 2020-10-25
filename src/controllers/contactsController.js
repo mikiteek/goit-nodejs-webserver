@@ -6,10 +6,13 @@ class ContactsController {
     try {
       const page = Number(req.query.page);
       const limit = Number(req.query.limit);
+      const {sub} = req.query;
+      const filterParams = sub ? {subscription: sub} : {};
       const options = {
         page, limit,
       };
-      const contacts = await contactModel.paginate({}, options);
+
+      const contacts = await contactModel.paginate(filterParams, options);
       return res.status(200).json(contacts);
     }
     catch (error) {
