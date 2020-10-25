@@ -5,10 +5,14 @@ const findContactByIdMiddleware = require("../middlewares/contactsMiddlewares/fi
 const createContactValidMiddleware = require("../middlewares/contactsMiddlewares/createContactValidateMiddleware");
 const checkEmailAlreadyExistMiddleWare = require("../middlewares/contactsMiddlewares/checkEmailExistMiddleware");
 const updateContactValidMiddleware = require("../middlewares/contactsMiddlewares/updateContactValidationMiddleware");
+const checkQueryParamsMiddleware = require("../middlewares/contactsMiddlewares/checkQueryParamsMiddleware");
 
 const contactsRoute = express.Router();
 
-contactsRoute.get("/", contactsController.getListContacts);
+contactsRoute.get("/",
+  checkQueryParamsMiddleware,
+  contactsController.getListContacts
+);
 contactsRoute.get("/:id",
   findContactByIdMiddleware,
   contactsController.getContactById
