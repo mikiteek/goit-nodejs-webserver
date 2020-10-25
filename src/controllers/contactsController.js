@@ -6,10 +6,10 @@ class ContactsController {
     try {
       const page = Number(req.query.page);
       const limit = Number(req.query.limit);
-      const contacts = await contactModel
-        .find({})
-        .skip((page - 1) * limit)
-        .limit(limit);
+      const options = {
+        page, limit,
+      };
+      const contacts = await contactModel.paginate({}, options);
       return res.status(200).json(contacts);
     }
     catch (error) {
