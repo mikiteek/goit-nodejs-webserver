@@ -69,7 +69,26 @@ class UsersController {
         email,
         subscription,
       }
-      res.status(200).json(userToClient);
+      return res.status(200).json(userToClient);
+    }
+    catch (error) {
+      next(error);
+    }
+  }
+
+  async updateUser(req, res, next) {
+    try {
+      const {user} = req;
+      const userToUpdate = await userModel.findByIdAndUpdate(
+        user.id,
+        {$set: req.body,},
+        {new: true,}
+      );
+      const userToClient = {
+        email: userToUpdate.email,
+        subscription: userToUpdate.subscription,
+      }
+      return res.status(200).json(userToClient);
     }
     catch (error) {
       next(error);
