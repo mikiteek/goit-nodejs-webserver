@@ -30,7 +30,7 @@ contactsRoute.delete("/:id",
 contactsRoute.patch("/:id",
   updateContactValidMiddleware,
   findContactByIdMiddleware,
-  contactsController.updateContactBiId,
+  contactsController.updateContactById,
 )
 
 module.exports = contactsRoute;

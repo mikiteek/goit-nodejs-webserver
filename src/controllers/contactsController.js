@@ -53,7 +53,7 @@ class ContactsController {
     }
   }
 
-  async updateContactBiId(req, res, next) {
+  async updateContactById(req, res, next) {
     try {
       const {id} = req.params;
       const contactToUpdate = await contactModel.findByIdAndUpdate(
