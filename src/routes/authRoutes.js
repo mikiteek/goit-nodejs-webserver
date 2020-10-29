@@ -5,12 +5,14 @@ const registerUsersValidateMiddleware = require("../middlewares/usersMiddlewares
 const checkUserExistMiddleware = require("../middlewares/usersMiddlewares/checkUserAlreadyExistMiddleware");
 const loginUsersValidateMiddleware = require("../middlewares/usersMiddlewares/loginUserValidateMiddleware");
 const authorizeMiddleware = require("../middlewares/usersMiddlewares/authorizeMiddleware");
+const createAvatarMiddleware = require("../middlewares/usersMiddlewares/createAvatarMiddleware");
 
 const authRoute = express.Router();
 
 authRoute.post("/register",
   registerUsersValidateMiddleware,
   checkUserExistMiddleware,
+  createAvatarMiddleware,
   usersController.register,
 );
 
