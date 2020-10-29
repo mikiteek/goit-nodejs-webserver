@@ -5,6 +5,7 @@ const userSchema = new Schema({
   email: {type: String, required: true, unique: true},
   password: {type: String, required: true, minlength: 6, maxlength: 130},
   subscription: {type: String, enum: ["free", "pro", "premium"], default: "free"},
+  avatarURL: {type: String},
   token: {type: String, default: ""},
 });
 
