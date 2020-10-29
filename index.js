@@ -1,23 +1,17 @@
-const {listContacts, getContactById, removeContact, addContact} = require("./contacts");
-const {argv} = require("./utils/yargs")
+const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
+const contactsRoute = require("./src/routes/contactsRoute");
 
-const invokeAction = ({action, id, name, email, phone}) => {
-  switch (action) {
-    case "list":
-      listContacts()
-      break;
-    case "get":
-      getContactById(id);
-      break;
-    case "add":
-      addContact(name, email, phone);
-      break;
-    case "remove":
-      removeContact(id);
-      break;
-    default:
-      console.warn('\x1B[31m Unknown action type!');
-  }
-}
+const app = express();
+const PORT = 3000;
 
-invokeAction(argv);
+app.use(express.json())
+app.use(cors({origin: "http://localhost:3000"}));
+app.use(morgan("combined"))
+
+app.use("/api/contacts", contactsRoute);
+
+app.listen(PORT, () => {
+  console.log("Started listening on port ", PORT)
+});
