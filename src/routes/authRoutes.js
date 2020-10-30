@@ -6,6 +6,7 @@ const checkUserExistMiddleware = require("../middlewares/usersMiddlewares/checkU
 const loginUsersValidateMiddleware = require("../middlewares/usersMiddlewares/loginUserValidateMiddleware");
 const authorizeMiddleware = require("../middlewares/usersMiddlewares/authorizeMiddleware");
 const createAvatarMiddleware = require("../middlewares/usersMiddlewares/createAvatarMiddleware");
+const handleImageMiddleware = require("../middlewares/usersMiddlewares/handleImageMiddleware");
 
 const authRoute = express.Router();
 
@@ -13,6 +14,7 @@ authRoute.post("/register",
   registerUsersValidateMiddleware,
   checkUserExistMiddleware,
   createAvatarMiddleware,
+  handleImageMiddleware,
   usersController.register,
 );
 

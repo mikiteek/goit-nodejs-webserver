@@ -10,8 +10,4 @@ imagesRoute.post("/",
   }
 );
 
-
-
-
-
 module.exports = imagesRoute;
