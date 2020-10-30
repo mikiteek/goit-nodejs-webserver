@@ -9,12 +9,12 @@ const usersRoute = express.Router();
 usersRoute.get("/current",
   authorizeMiddleware,
   usersController.getCurrentUser,
-)
+);
 
 usersRoute.patch("/",
   authorizeMiddleware,
   updateSubscriptionUserMiddleware,
   usersController.updateUser,
-)
+);
 
 module.exports = usersRoute;

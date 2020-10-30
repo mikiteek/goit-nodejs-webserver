@@ -9,10 +9,19 @@ const userSchema = new Schema({
   token: {type: String, default: ""},
 });
 
-async function updateToken(id, token) {
-  return this.findByIdAndUpdate(id, {token}, {new: true});
+async function updateTokenProjection(id, token) {
+  return this.findByIdAndUpdate(id, {token},
+    {
+      new: true,
+      projection: {
+        email: true,
+        subscription: true,
+        avatarURL: true,
+        _id: false,
+      }
+  });
 }
-userSchema.statics.updateToken = updateToken;
+userSchema.statics.updateToken = updateTokenProjection;
 // users
 const userModel = mongoose.model("User", userSchema);
 
