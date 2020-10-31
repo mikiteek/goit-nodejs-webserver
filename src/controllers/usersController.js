@@ -93,6 +93,24 @@ class UsersController {
       next(error);
     }
   }
+
+  async updateAvatar(req, res, next) {
+    try {
+      const {file: {filename}, user} = req;
+      const avatarURL = `${req.protocol}://${req.get("host")}/images/${filename}`
+      const userToUpdate = await userModel.findByIdAndUpdate(
+        user.id,
+        {$set: {avatarURL}},
+        {new: true},
+      );
+      const responseBody = {avatarURL: userToUpdate.avatarURL};
+
+      return res.status(200).json(responseBody);
+    }
+    catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new UsersController();

@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const contactRouter = require("./routes/contactsRoutes");
 const authRouter = require("./routes/authRoutes");
 const usersRouter = require("./routes/usersRouter");
-const imagesRouter = require("./routes/imagesRoutes");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 
 require("dotenv").config();
@@ -45,7 +44,6 @@ class HandlerServer {
     this.server.use("/api/contacts", contactRouter);
     this.server.use("/auth", authRouter);
     this.server.use("/users", usersRouter);
-    this.server.use("/images", imagesRouter);
   }
 
   async initDatabase() {

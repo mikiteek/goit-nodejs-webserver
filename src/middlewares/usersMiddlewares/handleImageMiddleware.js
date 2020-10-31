@@ -4,7 +4,7 @@ const {promises} = fs;
 const handleImagesMiddleware = async (req, res, next) => {
   try {
     const {oldPathImage, onlyNameImage} = req.avatarParams;
-    const avatarURL = "http://localhost:3000/images/" + onlyNameImage;
+    const avatarURL = `${req.protocol}://${req.get("host")}/images/${onlyNameImage}`
     const avatarNewPath = "src/public/images/" + onlyNameImage;
     await promises.rename(oldPathImage, avatarNewPath);
     req.avatarParams = avatarURL;

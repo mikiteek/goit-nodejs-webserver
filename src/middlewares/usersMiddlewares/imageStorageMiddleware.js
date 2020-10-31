@@ -7,7 +7,7 @@ const fileNameGenerator = (req, file, cb) => {
 }
 
 const storage  = multer.diskStorage({
-  destination: "src/public/images",
+  destination: "tmp",
   filename: fileNameGenerator,
 });
 
