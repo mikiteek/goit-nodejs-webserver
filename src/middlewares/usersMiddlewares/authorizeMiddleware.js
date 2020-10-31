@@ -4,6 +4,9 @@ const userModel = require("../../models/userModel");
 const authorizeMiddleware = async (req, res, next) => {
   try {
     const authorizationHeader = req.get("Authorization");
+    if (!authorizationHeader) {
+      return res.status(401).json({message: "Not authorized"});
+    }
     const token = authorizationHeader.replace("Bearer ", "");
 
     let userId;
