@@ -79,7 +79,7 @@ class UsersController {
       const userToUpdate = await userModel.findByIdAndUpdate(
         user.id,
         {$set: req.body,},
-        {new: true,}
+        {new: true, useFindAndModify: false},
       );
       const userToClient = userToClientService(userToUpdate);
       return res.status(200).json(userToClient);
@@ -96,11 +96,26 @@ class UsersController {
       const userToUpdate = await userModel.findByIdAndUpdate(
         user.id,
         {$set: {avatarURL}},
-        {new: true},
+        {new: true, useFindAndModify: false},
       );
       const responseBody = {avatarURL: userToUpdate.avatarURL};
 
       return res.status(200).json(responseBody);
+    }
+    catch (error) {
+      next(error);
+    }
+  }
+
+  async verifyToken(req, res, next) {
+    try {
+      const {verificationToken} = req.params;
+      const user = await userModel.findOne({verificationToken});
+      if (!user) {
+        return res.status(404).json({message: "Not found"});
+      }
+      await userModel.findByIdAndUpdate(user._id, {verificationToken: null}, {useFindAndModify: false});
+      return res.status(200).send();
     }
     catch (error) {
       next(error);

@@ -28,4 +28,8 @@ authRoute.post("/logout",
   usersController.logout,
 );
 
+authRoute.get("/verify/:verificationToken",
+  usersController.verifyToken,
+)
+
 module.exports = authRoute;
