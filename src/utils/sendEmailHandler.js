@@ -2,13 +2,13 @@ const sgMail = require("@sendgrid/mail");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendMailHandlerService = () => {
+const sendMailHandler = (emailTo, verifyToken) => {
   const msg = {
-    to: 'mikiteek@gmail.com',
+    to: emailTo,
     from: process.env.SENDGRID_EMAIL_FROM,
     subject: 'Welcome! Confirm your email',
     text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>Hi there, send grid has send you message</strong>',
+    html: `<p>Hello, please follow the <a href="http://localhost:3000/auth/verify/${verifyToken}">link</a> for verify your token</p>`,
   };
   sgMail
     .send(msg)
@@ -20,5 +20,5 @@ const sendMailHandlerService = () => {
     });
 }
 
-module.exports = sendMailHandlerService;
+module.exports = sendMailHandler;
 

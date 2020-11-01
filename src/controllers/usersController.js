@@ -1,5 +1,5 @@
 const userModel = require("../models/userModel");
-const sendEmailHandlerService = require("../utils/sendEmailHandlerService");
+const sendEmailHandler = require("../utils/sendEmailHandler");
 const userToClientService = require("../services/userToClientCreateService")
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -18,6 +18,7 @@ class UsersController {
         verificationToken,
       }
       const user = await userModel.create(userToDb);
+      sendEmailHandler(user.email, verificationToken);
       const token = await jwt.sign({id: user._id}, process.env.JWT_SECRET);
 
       const userToClient = {
@@ -79,7 +80,7 @@ class UsersController {
       const userToUpdate = await userModel.findByIdAndUpdate(
         user.id,
         {$set: req.body,},
-        {new: true, useFindAndModify: false},
+        {new: true, },
       );
       const userToClient = userToClientService(userToUpdate);
       return res.status(200).json(userToClient);
@@ -96,7 +97,7 @@ class UsersController {
       const userToUpdate = await userModel.findByIdAndUpdate(
         user.id,
         {$set: {avatarURL}},
-        {new: true, useFindAndModify: false},
+        {new: true, },
       );
       const responseBody = {avatarURL: userToUpdate.avatarURL};
 
