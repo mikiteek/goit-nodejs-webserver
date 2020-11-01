@@ -1,23 +1,28 @@
 const userModel = require("../models/userModel");
+const sendEmailHandlerService = require("../utils/sendEmailHandlerService");
+const userToClientService = require("../services/userToClientCreateService")
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { v4: uuid} = require('uuid');
 
 class UsersController {
   async register (req, res, next) {
     try {
       const costFactor = 6;
       const hashPassword = await bcrypt.hash(req.body.password, costFactor);
+      const verificationToken = uuid();
       const userToDb = {
         ...req.body,
         avatarURL: req.avatarParams,
         password: hashPassword,
+        verificationToken,
       }
-      const {_id: id} = await userModel.create(userToDb);
-      const token = await jwt.sign({id}, process.env.JWT_SECRET);
-      const user = await userModel.updateToken(id, token);
+      const user = await userModel.create(userToDb);
+      const token = await jwt.sign({id: user._id}, process.env.JWT_SECRET);
+
       const userToClient = {
-        user,
-        token
+        user: userToClientService(user),
+        token,
       };
       return res.status(201).json(userToClient);
     }
@@ -36,11 +41,10 @@ class UsersController {
       if(!isPasswordValid) {
         return res.status(401).json({message: "Not authorized"});
       }
-
       const token = await jwt.sign({id: userToFind._id}, process.env.JWT_SECRET);
-      const user = await userModel.updateToken(userToFind._id, token);
+
       const userToClient = {
-        user,
+        user: userToClientService(userToFind),
         token,
       }
       return res.status(200).json(userToClient);
@@ -52,8 +56,6 @@ class UsersController {
 
   async logout(req, res, next) {
     try {
-      const {_id: id} = req.user;
-      await userModel.updateToken(id, null);
       return res.status(204).send();
     }
     catch (error) {
@@ -63,11 +65,7 @@ class UsersController {
 
   async getCurrentUser(req, res, next) {
     try {
-      const {email, subscription} = req.user;
-      const userToClient = {
-        email,
-        subscription,
-      }
+      const userToClient = userToClientService(req.user);
       return res.status(200).json(userToClient);
     }
     catch (error) {
@@ -81,12 +79,9 @@ class UsersController {
       const userToUpdate = await userModel.findByIdAndUpdate(
         user.id,
         {$set: req.body,},
-        {new: true,}
+        {new: true, useFindAndModify: false},
       );
-      const userToClient = {
-        email: userToUpdate.email,
-        subscription: userToUpdate.subscription,
-      }
+      const userToClient = userToClientService(userToUpdate);
       return res.status(200).json(userToClient);
     }
     catch (error) {
@@ -101,11 +96,26 @@ class UsersController {
       const userToUpdate = await userModel.findByIdAndUpdate(
         user.id,
         {$set: {avatarURL}},
-        {new: true},
+        {new: true, useFindAndModify: false},
       );
       const responseBody = {avatarURL: userToUpdate.avatarURL};
 
       return res.status(200).json(responseBody);
+    }
+    catch (error) {
+      next(error);
+    }
+  }
+
+  async verifyToken(req, res, next) {
+    try {
+      const {verificationToken} = req.params;
+      const user = await userModel.findOne({verificationToken});
+      if (!user) {
+        return res.status(404).json({message: "Not found"});
+      }
+      await userModel.findByIdAndUpdate(user._id, {verificationToken: null}, {useFindAndModify: false});
+      return res.status(200).send();
     }
     catch (error) {
       next(error);
