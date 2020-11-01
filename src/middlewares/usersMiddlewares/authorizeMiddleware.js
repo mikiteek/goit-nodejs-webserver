@@ -4,6 +4,9 @@ const userModel = require("../../models/userModel");
 const authorizeMiddleware = async (req, res, next) => {
   try {
     const authorizationHeader = req.get("Authorization");
+    if (!authorizationHeader) {
+      res.status(401).json({message: "Not authorized"});
+    }
     const token = authorizationHeader.replace("Bearer ", "");
 
     let userId;
@@ -14,7 +17,7 @@ const authorizeMiddleware = async (req, res, next) => {
       return res.status(401).json({message: "Not authorized"});
     }
     const user = await userModel.findById(userId);
-    if (!user || user.token !== token) {
+    if (!user) {
       return res.status(401).json({message: "Not authorized"});
     }
     req.user = user;

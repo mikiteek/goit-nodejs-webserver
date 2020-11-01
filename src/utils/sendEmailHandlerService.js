@@ -5,8 +5,8 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const sendMailHandlerService = () => {
   const msg = {
     to: 'mikiteek@gmail.com',
-    from: 'mikiteek@icloud.com',
-    subject: 'Sending with SendGrid is Fun',
+    from: process.env.SENDGRID_EMAIL_FROM,
+    subject: 'Welcome! Confirm your email',
     text: 'and easy to do anywhere, even with Node.js',
     html: '<strong>Hi there, send grid has send you message</strong>',
   };
@@ -19,8 +19,6 @@ const sendMailHandlerService = () => {
       console.error(error)
     });
 }
-
-sendMailHandlerService();
 
 module.exports = sendMailHandlerService;
 
