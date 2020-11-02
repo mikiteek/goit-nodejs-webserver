@@ -1,4 +1,4 @@
-const contactModel = require("../models/contactModel");
+const contactModel = require("../../models/contactModel");
 
 const checkEmailExistMiddleware = async (req, res, next) => {
   const {email} = req.body;

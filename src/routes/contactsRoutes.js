@@ -1,14 +1,18 @@
 const express = require("express");
 
 const contactsController = require("../controllers/contactsController");
-const findContactByIdMiddleware = require("../middlewares/findContactByIdMiddleware");
-const createContactValidMiddleware = require("../middlewares/createContactValidateMiddleware");
-const checkEmailAlreadyExistMiddleWare = require("../middlewares/checkEmailExistMiddleware");
-const updateContactValidMiddleware = require("../middlewares/updateContactValidationMiddleware");
+const findContactByIdMiddleware = require("../middlewares/contactsMiddlewares/findContactByIdMiddleware");
+const createContactValidMiddleware = require("../middlewares/contactsMiddlewares/createContactValidateMiddleware");
+const checkEmailAlreadyExistMiddleWare = require("../middlewares/contactsMiddlewares/checkEmailExistMiddleware");
+const updateContactValidMiddleware = require("../middlewares/contactsMiddlewares/updateContactValidationMiddleware");
+const checkQueryParamsMiddleware = require("../middlewares/contactsMiddlewares/checkQueryParamsMiddleware");
 
 const contactsRoute = express.Router();
 
-contactsRoute.get("/", contactsController.getListContacts);
+contactsRoute.get("/",
+  checkQueryParamsMiddleware,
+  contactsController.getListContacts
+);
 contactsRoute.get("/:id",
   findContactByIdMiddleware,
   contactsController.getContactById
@@ -26,7 +30,7 @@ contactsRoute.delete("/:id",
 contactsRoute.patch("/:id",
   updateContactValidMiddleware,
   findContactByIdMiddleware,
-  contactsController.updateContactBiId,
+  contactsController.updateContactById,
 )
 
 module.exports = contactsRoute;
