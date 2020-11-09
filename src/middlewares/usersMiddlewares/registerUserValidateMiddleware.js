@@ -5,6 +5,7 @@ const registerUserValidateMiddleware = (req, res, next) => {
     email: Joi.string().email().required(),
     subscription: Joi.string().valid("free", "premium", "pro").default("free"),
     password: Joi.string().min(6).max(30).required(),
+    avatarURL: Joi.string(),
   });
   const validateResult = schema.validate(req.body);
   if (validateResult.error) {

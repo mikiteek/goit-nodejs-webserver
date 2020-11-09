@@ -9,17 +9,16 @@ class UsersController {
       const hashPassword = await bcrypt.hash(req.body.password, costFactor);
       const userToDb = {
         ...req.body,
+        avatarURL: req.avatarParams,
         password: hashPassword,
       }
       const {_id: id} = await userModel.create(userToDb);
       const token = await jwt.sign({id}, process.env.JWT_SECRET);
-      const {email, subscription} = await userModel.updateToken(id, token);
-
+      const user = await userModel.updateToken(id, token);
       const userToClient = {
-        user: {email, subscription},
+        user,
         token
       };
-
       return res.status(201).json(userToClient);
     }
     catch (error) {
@@ -29,19 +28,19 @@ class UsersController {
   async login(req, res, next) {
     try {
       const {password} = req.body;
-      const user = await userModel.findOne({email: req.body.email})
-      if (!user) {
+      const userToFind = await userModel.findOne({email: req.body.email})
+      if (!userToFind) {
         return res.status(401).json({message: "Not authorized"});
       }
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+      const isPasswordValid = await bcrypt.compare(password, userToFind.password);
       if(!isPasswordValid) {
         return res.status(401).json({message: "Not authorized"});
       }
 
-      const token = await jwt.sign({id: user._id}, process.env.JWT_SECRET);
-      const {email, subscription} = await userModel.updateToken(user._id, token);
+      const token = await jwt.sign({id: userToFind._id}, process.env.JWT_SECRET);
+      const user = await userModel.updateToken(userToFind._id, token);
       const userToClient = {
-        user: {email, subscription},
+        user,
         token,
       }
       return res.status(200).json(userToClient);
@@ -89,6 +88,24 @@ class UsersController {
         subscription: userToUpdate.subscription,
       }
       return res.status(200).json(userToClient);
+    }
+    catch (error) {
+      next(error);
+    }
+  }
+
+  async updateAvatar(req, res, next) {
+    try {
+      const {file: {filename}, user} = req;
+      const avatarURL = `${req.protocol}://${req.get("host")}/images/${filename}`
+      const userToUpdate = await userModel.findByIdAndUpdate(
+        user.id,
+        {$set: {avatarURL}},
+        {new: true},
+      );
+      const responseBody = {avatarURL: userToUpdate.avatarURL};
+
+      return res.status(200).json(responseBody);
     }
     catch (error) {
       next(error);
