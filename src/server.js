@@ -10,8 +10,7 @@ const usersRouter = require("./routes/usersRouter");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 
 const PORT = process.env.PORT || 3000;
-const {MONGO_KEY, DB_NAME} = process.env;
-const MONGO_URL = `mongodb+srv://mikiteek:${MONGO_KEY}@cluster0.pjuye.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
+const {DATABASE_URL} = process.env;
 
 class HandlerServer {
   constructor() {
