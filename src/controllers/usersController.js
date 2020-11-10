@@ -43,7 +43,9 @@ class UsersController {
         return res.status(401).json({message: "Not authorized"});
       }
       const token = await jwt.sign({id: userToFind._id}, process.env.JWT_SECRET);
-
+      if (userToFind.verificationToken) {
+        return res.status(401).json({message: "Please verify your email"});
+      }
       const userToClient = {
         user: userToClientService(userToFind),
         token,
