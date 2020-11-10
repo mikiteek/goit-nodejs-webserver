@@ -48,8 +48,8 @@ class HandlerServer {
 
   async initDatabase() {
     try {
-      await mongoose.connect(MONGO_URL, mongooseOptions);
-      console.log(`Mongoose has connected to DB ${DB_NAME}`);
+      await mongoose.connect(DATABASE_URL, mongooseOptions);
+      console.log(`Mongoose has connected to DB`);
     }
     catch (error) {
       console.log(error);
