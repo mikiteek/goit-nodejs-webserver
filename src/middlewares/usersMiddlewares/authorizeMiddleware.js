@@ -5,7 +5,7 @@ const authorizeMiddleware = async (req, res, next) => {
   try {
     const authorizationHeader = req.get("Authorization");
     if (!authorizationHeader) {
-      res.status(401).json({message: "Not authorized"});
+      return res.status(401).json({message: "Not authorized"});
     }
     const token = authorizationHeader.replace("Bearer ", "");
 
