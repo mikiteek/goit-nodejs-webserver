@@ -17,7 +17,7 @@ const authorizeMiddleware = async (req, res, next) => {
       return res.status(401).json({message: "Not authorized"});
     }
     const user = await userModel.findById(userId);
-    if (!user || user.token !== token) {
+    if (!user) {
       return res.status(401).json({message: "Not authorized"});
     }
     req.user = user;

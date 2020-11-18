@@ -1,13 +1,14 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
+const mongooseOptions = require("./utils/mongooseOptions");
 const contactRouter = require("./routes/contactsRoutes");
 const authRouter = require("./routes/authRoutes");
 const usersRouter = require("./routes/usersRouter");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 
-require("dotenv").config();
 const PORT = process.env.PORT || 3000;
 const {DATABASE_URL} = process.env;
 
@@ -47,7 +48,7 @@ class HandlerServer {
 
   async initDatabase() {
     try {
-      await mongoose.connect(DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true});
+      await mongoose.connect(DATABASE_URL, mongooseOptions);
       console.log(`Mongoose has connected to DB`);
     }
     catch (error) {
